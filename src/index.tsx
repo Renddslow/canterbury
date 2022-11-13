@@ -77,9 +77,20 @@ const Button = styled.button`
 const App = () => {
   const [type, setType] = useState("email");
   const [value, setValue] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSending(true);
+    await fetch("/.netlify/functions/signup", {
+      method: "POST",
+      body: JSON.stringify({ value, type }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setSent(true);
   };
 
   return (
@@ -89,33 +100,43 @@ const App = () => {
           <p>Sign up for a</p>
           <h1>Spiritual Check Up</h1>
         </div>
-        <Toggle
-          left={type === "email"}
-          onClick={() => setType((s) => (s === "email" ? "phone" : "email"))}
-        >
-          <span>Email</span>
-          <span>Text Message</span>
-        </Toggle>
-        <form onSubmit={handleSubmit}>
-          {type === "email" ? (
-            <Input
-              id="email"
-              label="Email address"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          ) : (
-            <Input
-              id="phone"
-              label="Phone number"
-              autoComplete="tel"
-              type="text"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          )}
-          <Button>Sign Up</Button>
-        </form>
+        {sent ? (
+          <div>Thanks for joining us on this journey!</div>
+        ) : (
+          <>
+            <Toggle
+              left={type === "email"}
+              onClick={() =>
+                setType((s) => (s === "email" ? "phone" : "email"))
+              }
+            >
+              <span>Email</span>
+              <span>Text Message</span>
+            </Toggle>
+            <form onSubmit={handleSubmit}>
+              {type === "email" ? (
+                <Input
+                  id="email"
+                  label="Email address"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              ) : (
+                <Input
+                  id="phone"
+                  label="Phone number"
+                  autoComplete="tel"
+                  type="text"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              )}
+              <Button disabled={isSending}>
+                {isSending ? "Signing up..." : "Sign Up"}
+              </Button>
+            </form>
+          </>
+        )}
       </Card>
     </Wrapper>
   );
