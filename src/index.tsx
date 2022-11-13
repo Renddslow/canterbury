@@ -20,8 +20,8 @@ const Toggle = styled.button`
   color: #0d0e0d;
   border-radius: 4px;
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: max-content;
   font-size: inherit;
   cursor: pointer;
 
