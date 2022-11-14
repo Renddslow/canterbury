@@ -79,17 +79,7 @@ const notify = async () => {
     )
   );
 
-  // const subscriptions = data.data.map((d) => d.data);
-  const subscriptions = [
-    {
-      type: "email",
-      value: "mubatt@wyopub.com",
-    },
-    {
-      type: "phone",
-      value: "+14028850620",
-    },
-  ];
+  const subscriptions = data.data.map((d) => d.data);
 
   await Promise.all(
     subscriptions.map(async (data) => {
