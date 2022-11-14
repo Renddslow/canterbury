@@ -118,4 +118,4 @@ const notify = async () => {
   };
 };
 
-exports.handler = schedule("15 7 * * *", notify);
+exports.handler = schedule("25 15 * * *", notify);
